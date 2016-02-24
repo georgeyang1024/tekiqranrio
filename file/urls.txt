@@ -1,3 +1,11 @@
+二维码边缘检测流程
+http://toutiao.com/i6226639531093787138/
+1.边缘检测处理(canny)
+2.形态学处理(经过一次闭运算和两次开运算之后就能得到长方形状的区域)
+3.图片纠正
+
+
+
 canny流程
 https://www.processon.com/view/564dcbd4e4b0a24b1b21e8e3
 
@@ -21,7 +29,7 @@ Canny边缘检测算子
 　　　　b) 如果像元(x, y)的梯度值小于tlow，则标记为非边缘像元；
 　　　　c) 如果像元(x, y)值介于两个阈值之间，则判断及3、5邻域内是否存在梯度大于thigh，如果有则标记为边缘，没有则标记为非边缘像元。
 
-详细步骤讲解算法：
+详细步骤讲解算法及原理：
 http://blog.csdn.net/xiaojiegege123456/article/details/7714897
 
 
@@ -32,6 +40,13 @@ http://blog.csdn.net/likezhaobin/article/details/6892629
 java版canny算法，经过精简不知可靠否:
 http://blog.sina.com.cn/s/blog_6ad1c6710100p5dx.html
 
+canny算子C语言实现
+http://blog.csdn.net/godenlove007/article/details/7609609
+http://my.oschina.net/zhangxuman/blog/338573
 
-二维码边缘检测流程
-http://toutiao.com/i6226639531093787138/
+canny自适应阀值：
+http://my.oschina.net/liujinofhome/blog/37041
+
+canny算子，java版实现
+http://blog.csdn.net/jia20003/article/details/41173767
+

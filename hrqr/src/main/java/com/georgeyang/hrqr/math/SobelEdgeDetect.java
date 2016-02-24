@@ -2,21 +2,24 @@ package com.georgeyang.hrqr.math;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
+ * Sobel算子边缘检测
  * copy and change from:http://blog.sina.com.cn/s/blog_6ad1c6710100p5dx.html
  * Created by Administrator on 2016/2/23 0023.
  */
-public class SobelEdgeDetect implements Math {
+public class SobelEdgeDetect implements ImageMath {
     @Override
     public byte[] dealImage(byte[] data) {
         return new byte[0];
     }
-
-
 
     int width;//图像宽
     int height;//图像高
@@ -29,17 +32,17 @@ public class SobelEdgeDetect implements Math {
     }
 
 
-    public void readImage(String imageName) throws IOException {
-        File imageFile = new File(imageName);
+    public void readImage(String imageName) {
        Bitmap bitmap = BitmapFactory.decodeFile(imageName);
         width = bitmap.getWidth();
         height = bitmap.getHeight();
         size = width * height;
         int[] imageData = new int[width*height];
 
-        bitmap.getPixels(argb, 0, width, 0, 0, width,height);
+        bitmap.getPixels(imageData, 0, width, 0, 0, width,height);
 
-        outBinary = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);// 生成边缘图像
+//        outBinary = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);// 生成边缘图像
+        outBinary = Bitmap.createBitmap(width,height, Bitmap.Config.RGB_565);
         grayData = new int[width * height];// 开辟内存空间
         for (int i = 0; i < imageData.length; i++) {
             grayData[i] = (imageData[i] & 0xff0000) >> 16;// 由于读的是灰度图，故只考虑一个分量（三分量值相同）
@@ -56,13 +59,16 @@ public class SobelEdgeDetect implements Math {
         if (gradientThreshold >= 0) {
             for (int y = 1; y < height - 1; ++y)
                 for (int x = 1; x < width - 1; ++x)
-                    if (Math.round(scaleFactor * gradient[y * width + x]) >= gradientThreshold)
-                        outBinary.setRGB(x, y, 0xffffff);// 白色
+                    if (Math.round(scaleFactor * gradient[y * width + x]) >= gradientThreshold) {
+                        outBinary.setPixel(x,y,0xffffff);
+                        Log.d("george","setPixel:" + x  +"," + y + ">" + 0xffffff);
+                    }
+
         }// 对梯度大小进行阈值处理
         else {
             for (int y = 1; y < height - 1; ++y)
                 for (int x = 1; x < width - 1; ++x)
-                    outBinary.setRGB(x, y, 0x000000);// 黑色;
+                    outBinary.setPixel(x, y, 0x000000);// 黑色;
         }// //不对梯度大小进行阈值处理, 直接给出用比例因子调整后的值
         writeImage(outBinary, desImageName);
     }
@@ -95,11 +101,16 @@ public class SobelEdgeDetect implements Math {
                 + getGrayPoint(x + 1, y - 1) - getGrayPoint(x - 1, y + 1)
                 - 2*getGrayPoint(x, y + 1) - getGrayPoint(x + 1, y + 1);
     }// 计算像素点(x,y)Y方向上的梯度值
-    public void writeImage(BufferedImage bi, String imageName) {
-        File skinImageOut = new File(imageName);
+    public static void writeImage(Bitmap img, String imageName) {
+        File myCaptureFile = new File( imageName);
+        BufferedOutputStream bos = null;
         try {
-            ImageIO.write(bi, "jpg", skinImageOut);
-        } catch (IOException e) {
+            bos = new BufferedOutputStream(
+                    new FileOutputStream(myCaptureFile));
+            img.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

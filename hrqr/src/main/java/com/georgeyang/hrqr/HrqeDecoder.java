@@ -8,5 +8,6 @@ import android.graphics.Bitmap;
 public class HrqeDecoder {
     public static Bitmap decode (Bitmap bitmap) {
 
+        return null;
     }
 }
