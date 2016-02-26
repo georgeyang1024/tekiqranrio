@@ -15,10 +15,12 @@ import java.io.IOException;
  * copy and change from:http://blog.sina.com.cn/s/blog_6ad1c6710100p5dx.html
  * Created by Administrator on 2016/2/23 0023.
  */
-public class SobelEdgeDetect implements ImageMath {
+public class SobelEdgeDetect extends ImageMath {
+
+
     @Override
-    public byte[] dealImage(byte[] data) {
-        return new byte[0];
+    public int[] dealImage(int[] data, int width, int height) {
+        return new int[0];
     }
 
     int width;//图像宽
@@ -100,7 +102,8 @@ public class SobelEdgeDetect implements ImageMath {
         return getGrayPoint(x - 1, y - 1) + 2*getGrayPoint(x, y - 1)
                 + getGrayPoint(x + 1, y - 1) - getGrayPoint(x - 1, y + 1)
                 - 2*getGrayPoint(x, y + 1) - getGrayPoint(x + 1, y + 1);
-    }// 计算像素点(x,y)Y方向上的梯度值
+    }
+    // 计算像素点(x,y)Y方向上的梯度值
     public static void writeImage(Bitmap img, String imageName) {
         File myCaptureFile = new File( imageName);
         BufferedOutputStream bos = null;

@@ -6,6 +6,9 @@ import com.georgeyang.hrqr.util.BitmapUtil;
 
 import java.util.Arrays;
 
+/**
+ * canny边缘提取
+ */
 public class CannyEdgeFilter {
     private float gaussianKernelRadius = 2f;
     private int gaussianKernelWidth = 16;
