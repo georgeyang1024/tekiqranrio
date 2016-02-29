@@ -248,7 +248,7 @@ public class CannyEdgeFilter {
         for(int i=0; i<inPixels.length; i++)
         {
             int gray = clamp((int)data[i]);
-            outPixels[i] = gray > 0 ? -1 : 0xff000000;
+            outPixels[i] = gray > 0 ? 0xff000000 : -1;
         }
 //        setRGB(dest, 0, 0, width, height, outPixels );
        Bitmap dest =  Bitmap.createBitmap(outPixels,width,height, Bitmap.Config.RGB_565);

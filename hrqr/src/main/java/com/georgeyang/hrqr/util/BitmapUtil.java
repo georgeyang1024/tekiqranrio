@@ -121,10 +121,43 @@ public class BitmapUtil {
      *            所需图片压缩尺寸最小高度
      * @return
      */
-    private static int calculateInSampleSize(BitmapFactory.Options options,
+    public static int calculateInSampleSize(BitmapFactory.Options options,
                                              int reqWidth, int reqHeight) {
         final int picheight = options.outHeight;
         final int picwidth = options.outWidth;
+
+        float targetheight = picheight * 1f;
+        float targetwidth = picwidth * 1f;
+        int inSampleSize = 1;
+
+            while (targetheight  > reqHeight
+                    || targetwidth> reqWidth) {
+                inSampleSize += 1;
+                targetheight = picheight/inSampleSize;
+                targetwidth = picwidth/inSampleSize;
+        }
+
+        return inSampleSize;
+    }
+
+    /**
+     * 计算压缩比例值(改进版 by touch_ping)
+     *
+     * 原版2>4>8...倍压缩
+     * 当前2>3>4...倍压缩
+     *
+     * @param bitmap
+     *            解析图片的配置信息
+     * @param reqWidth
+     *            所需图片压缩尺寸最小宽度O
+     * @param reqHeight
+     *            所需图片压缩尺寸最小高度
+     * @return
+     */
+    public static int calculateInSampleSize(Bitmap bitmap,
+                                            int reqWidth, int reqHeight) {
+        final int picheight = bitmap.getHeight();
+        final int picwidth = bitmap.getWidth();
 
         int targetheight = picheight;
         int targetwidth = picwidth;
